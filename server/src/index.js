@@ -7,6 +7,7 @@ import cookieParser from "cookie-parser";
 import { authorizationChecker } from "./middleware/authorization.middleware.js";
 import cors from "cors";
 import { app, server } from "./lib/socket.lib.js";
+import path from "path";
 
 configDotenv();
 app.use(express.json());
@@ -27,6 +28,13 @@ router.get("/test", (req, res) => {
 router.use("/auth", authRoutes);
 router.use("/messages", authorizationChecker, messageRoutes);
 
+if (process.env.NODE_ENV === "prod") {
+  app.use(express.static(path.join(__dirname, "../frontend/dist")));
+
+  app.get("*", (req, res) => {
+    res.sendFile(path.join(__dirname, "../frontend", "dist", "index.html"));
+  });
+}
 const PORT = process.env.PORT || 3002;
 server.listen(PORT, () => {
   mongoDB();
