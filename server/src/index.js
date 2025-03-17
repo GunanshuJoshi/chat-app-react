@@ -1,0 +1,34 @@
+import express from "express";
+import { configDotenv } from "dotenv";
+import authRoutes from "./routes/auth.routes.js";
+import messageRoutes from "./routes/message.routes.js";
+import { mongoDB } from "./lib/mongodb.lib.js";
+import cookieParser from "cookie-parser";
+import { authorizationChecker } from "./middleware/authorization.middleware.js";
+import cors from "cors";
+configDotenv();
+
+const app = express();
+app.use(express.json());
+app.use(cookieParser());
+app.use(
+  cors({
+    origin: process.env.FRONTEND_URL,
+    credentials: true,
+  })
+);
+const router = express.Router();
+app.use("/api", router);
+
+router.get("/test", (req, res) => {
+  res.status(200).send("Backend testing is successfull");
+});
+
+router.use("/auth", authRoutes);
+router.use("/messages", authorizationChecker, messageRoutes);
+
+const PORT = process.env.PORT || 3002;
+app.listen(PORT, () => {
+  mongoDB();
+  console.log("Backend running on ", PORT);
+});
