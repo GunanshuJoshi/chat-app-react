@@ -32,10 +32,10 @@ router.use("/auth", authRoutes);
 router.use("/messages", authorizationChecker, messageRoutes);
 
 if (process.env.NODE_ENV === "prod") {
-  app.use(express.static(path.join(__dirname, "../frontend/dist")));
+  app.use(express.static(path.join(__dirname, "../client/dist")));
 
   app.get("*", (req, res) => {
-    res.sendFile(path.join(__dirname, "../frontend", "dist", "index.html"));
+    res.sendFile(path.join(__dirname, "../client", "dist", "index.html"));
   });
 }
 const PORT = process.env.PORT || 3002;
