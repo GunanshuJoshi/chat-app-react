@@ -9,23 +9,21 @@ import SignUp from "./components/SignUp";
 import { useAuthStore } from "./store/useAuthStore";
 import { Toaster } from "react-hot-toast";
 import { useThemeStore } from "./store/useThemeStore";
+import Loading from "./components/Loading";
 const App = () => {
-  const { authUser, checkAuth, isCheckingAuth } = useAuthStore();
+  const { authUser, checkAuth, isCheckingAuth, onlineUsers } = useAuthStore();
+  console.log("🚀 ~ App ~ onlineUsers:", onlineUsers);
   const { theme } = useThemeStore();
   useEffect(() => {
     checkAuth();
   }, []);
 
   if (isCheckingAuth && !authUser) {
-    return (
-      <div className="h-screen w-screen flex justify-center items-center">
-        <span className="loading loading-infinity w-20 h-20"></span>
-      </div>
-    );
+    return <Loading />;
   }
 
   return (
-    <div data-theme={theme} className="min-h-screen min-w-screen">
+    <div data-theme={theme} className="min-h-screen no-scrollbar">
       <Navbar />
       <Routes>
         <Route
@@ -44,7 +42,7 @@ const App = () => {
           path="/profile"
           element={authUser ? <ProfilePage /> : <Navigate to="/login" />}
         />
-        <Route path="/setting" element={<Setting />} />
+        <Route path="/settings" element={<Setting />} />
       </Routes>
       <Toaster />
     </div>

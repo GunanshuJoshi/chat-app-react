@@ -6,9 +6,9 @@ import { mongoDB } from "./lib/mongodb.lib.js";
 import cookieParser from "cookie-parser";
 import { authorizationChecker } from "./middleware/authorization.middleware.js";
 import cors from "cors";
-configDotenv();
+import { app, server } from "./lib/socket.lib.js";
 
-const app = express();
+configDotenv();
 app.use(express.json());
 app.use(cookieParser());
 app.use(
@@ -28,7 +28,7 @@ router.use("/auth", authRoutes);
 router.use("/messages", authorizationChecker, messageRoutes);
 
 const PORT = process.env.PORT || 3002;
-app.listen(PORT, () => {
+server.listen(PORT, () => {
   mongoDB();
   console.log("Backend running on ", PORT);
 });
