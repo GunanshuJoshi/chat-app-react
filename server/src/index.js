@@ -10,6 +10,9 @@ import { app, server } from "./lib/socket.lib.js";
 import path from "path";
 
 configDotenv();
+
+const __dirname = path.resolve();
+
 app.use(express.json());
 app.use(cookieParser());
 app.use(
