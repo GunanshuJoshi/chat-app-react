@@ -3,7 +3,7 @@ import { axiosInstance } from "../lib/axios";
 import toast from "react-hot-toast";
 import { io } from "socket.io-client";
 const BACKEND_URL =
-  import.meta.env.VITE_MODE === "dev" ? import.meta.env.VITE_BACKEND_URL : "/api";
+  import.meta.env.VITE_MODE === "dev" ? import.meta.env.VITE_BACKEND_URL : "/";
 
 export const useAuthStore = create((set, get) => ({
   authUser: null,
